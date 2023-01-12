@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% comment %} {% load django_browser_reload %} {% endcomment %}
+<html lang="en">
+  <head>
+    <style>
+      :root {
+        --background: #007af7;
+        --white-text: #fff;
+        --hover-text: #222;
+        --button-background: #fff;
+        --button-background-hover: #000;
+        --button-text: #007af7;
+      }
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: Poppins;
+        font-size: 100%;
+      }
+
+      .cookie-container {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: var(--background);
+        color: var(--white-text);
+        position: fixed;
+        bottom: 0;
+        font-size: 1rem;
+        gap: 2rem;
+        opacity: 1;
+        visibility: visible;
+        flex-wrap: wrap;
+      }
+
+      .cookie-container.hide {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .cookie-container a {
+        color: var(--white-color);
+      }
+
+      .cookie-container a:hover {
+        color: var(--hover-text);
+      }
+
+      .cookie-container .cookie-text {
+        flex: 8 768px;
+      }
+
+      .cookie-container .agree {
+        flex: 1 150px;
+        text-align: center;
+      }
+
+      .agree button {
+        background: var(--button-background);
+        color: var(--button-text);
+        border: none;
+        padding: 0.4rem 1.2rem;
+        cursor: pointer;
+        border-radius: 20px;
+        font-size: 1rem;
+      }
+
+      .agree button:hover {
+        background: var(--button-background-hover);
+        color: var(--white-text);
+      }
+    </style>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+
+    <title>{% block title %} {% endblock title %}</title>
+  </head>
+  <body>
+    {% include 'components/nav.html' %} {% if messages %} {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div
+        class="alert {{ message.tags }} alert-dismissible fade show"
+        role="alert"
+      >
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %} 
+    {% endif %}
+    <main class="container">{% block main %} {% endblock main %}</main>
+    <div class="cookie-container hide">
+      <p class="cookie-text">
+        We use cookies and similar technologies that are necessary to operate
+        the website. Additional cookies are used to perform analysis of website
+        usage. By continuing to use our website, consent to our use of cookies.
+        For more information, please read our <a href="#"> Privacy Policy.</a>
+      </p>
+      <div class="agree">
+        <button>Sounds good!</button>
+      </div>
+    </div>
+    <script>
+       window.onload = function() {
+        const cookieContainer = document.querySelector(".cookie-container");
+            const agreeBtn = document.querySelector(".agree button");
+            const cookiesConsented = localStorage.getItem('cookiesConsented')
+            cookieContainer.classList.add("hide");
+            console.log('cookies not consented',cookiesConsented)
+
+
+
+
+
+            setTimeout(() => {
+              cookieContainer.classList.remove("hide");
+            }, 1);
+
+            agreeBtn.addEventListener("click", () => {
+              cookieContainer.classList.add("hide");
+              localStorage.setItem('cookiesConsented', true);
+
+            });
+      };
+
+
+
+
+                  {% block script %}
+
+                  {% endblock script %}
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    {% comment %} {%django_browser_reload_script %} {% endcomment %}
+  </body>
+</html>
