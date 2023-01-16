@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s43k26y$(a8*o7f6q17kz*q^g=*bl6j=j(r1d8gdfs#cw394wc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,18 +46,22 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     # "django_browser_reload",
     # 'debug_toolbar',
+    "whitenoise.runserver_nostatic",
+    
+    'captcha',
     'silk',
     'jobs',
     'users',
     'dashboard',
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'silk.middleware.SilkyMiddleware',
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 # Custom Middleware to store users ip address and device type
     'config.middleware.IpMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,6 +106,12 @@ DATABASES = {
     },
 
 }
+if not DEBUG:
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=600, ssl_require=True)
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
 
 
 # Password validation
@@ -136,7 +148,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static/"),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 AUTH_USER_MODEL = "users.User"
 # TODO Change the email related settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -153,3 +174,4 @@ LOGIN_URL="/users/login"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+django_heroku.settings(locals())

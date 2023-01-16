@@ -14,9 +14,11 @@ django-replicated==2.7
 django-silk==5.0.2
 django_debug_toolbar==3.8.1
 gprof2dot==2022.7.29
+gunicorn==20.1.0
 idna==3.4
 Jinja2==3.1.2
 MarkupSafe==2.1.1
+psycopg2-binary==2.9.5
 pycodestyle==2.10.0
 python-dateutil==2.8.2
 pytz==2022.7
@@ -27,3 +29,4 @@ sqlparse==0.4.3
 tomli==2.0.1
 ua-parser==0.16.1
 urllib3==1.26.13
+whitenoise==6.3.0

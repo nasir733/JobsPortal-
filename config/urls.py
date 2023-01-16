@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from jobs.views import robots_txt
 
 urlpatterns = [
     # path("__reload__/", include("django_browser_reload.urls")),
     # path('__debug__/', include('debug_toolbar.urls')),
+    path('', include('dashboard.urls')),
+    path("robots.txt", robots_txt, name="robots.txt"),
     path('admin/', admin.site.urls),
-    path('',include('dashboard.urls')),
+    path('captcha/', include('captcha.urls')),
     path('jobs/', include('jobs.urls')),
     path('users/', include('users.urls')),
     

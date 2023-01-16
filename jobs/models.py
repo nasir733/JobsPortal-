@@ -14,5 +14,6 @@ class Job(models.Model):
     location = models.CharField(max_length=50)
     link = models.CharField(max_length=200)
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True,)
     def __str__(self):
         return self.title

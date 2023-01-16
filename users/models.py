@@ -69,3 +69,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 class UserDeviceInfo(models.Model):
     user_ip = models.CharField(max_length=155,null=True,blank=True)
     device_type = models.CharField(max_length=155,null=True,blank=True)
+    
+    def __str__(self) -> str:
+        return f'{self.user_ip}{self.device_type}'
